@@ -1,0 +1,73 @@
+{
+  "ship": {
+    "w": 6,
+    "l": 8,
+    "MaxCapacity": 25
+  },
+  "vehicles": [
+    {
+      "id": "V1",
+      "w": 3,
+      "l": 4,
+      "ShippingFee": 60,
+      "Weight": 5,
+      "ETA": 3
+    },
+    {
+      "id": "V2",
+      "w": 2,
+      "l": 3,
+      "ShippingFee": 40,
+      "Weight": 4,
+      "ETA": 2
+    },
+    {
+      "id": "V3",
+      "w": 4,
+      "l": 4,
+      "ShippingFee": 80,
+      "Weight": 8,
+      "ETA": 1
+    },
+    {
+      "id": "V4",
+      "w": 3,
+      "l": 5,
+      "ShippingFee": 70,
+      "Weight": 6,
+      "ETA": 4
+    },
+    {
+      "id": "V5",
+      "w": 2,
+      "l": 4,
+      "ShippingFee": 50,
+      "Weight": 3,
+      "ETA": 5
+    },
+    {
+      "id": "V6",
+      "w": 4,
+      "l": 3,
+      "ShippingFee": 75,
+      "Weight": 7,
+      "ETA": 2
+    },
+    {
+      "id": "V7",
+      "w": 3,
+      "l": 3,
+      "ShippingFee": 55,
+      "Weight": 4,
+      "ETA": 6
+    },
+    {
+      "id": "V8",
+      "w": 2,
+      "l": 2,
+      "ShippingFee": 35,
+      "Weight": 2,
+      "ETA": 7
+    }
+  ]
+}
