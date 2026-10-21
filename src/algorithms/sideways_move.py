@@ -13,8 +13,7 @@ def hill_climbing_sideways(state, max_sideways=100, max_iterations=1000):
 
     value_history = [current_value]
     iteration = 0
-    sideways_count = 0        
-    total_sideways = 0
+    sideways_count = 0
     stop_reason = "max_iterations"
 
     while iteration < max_iterations:
@@ -36,9 +35,6 @@ def hill_climbing_sideways(state, max_sideways=100, max_iterations=1000):
                 stop_reason = "max_sideways"
                 break
             sideways_count += 1
-            total_sideways += 1
-        else:
-            sideways_count = 0
 
         best_neighbors = [n for n, v in zip(neighbors, values) if v == best_value]
         current = random.choice(best_neighbors)
@@ -53,7 +49,7 @@ def hill_climbing_sideways(state, max_sideways=100, max_iterations=1000):
         "final_value": current_value,
         "value_history": value_history,
         "iterations": iteration,
-        "sideways_moves": total_sideways,
+        "sideways_moves": sideways_count,
         "stop_reason": stop_reason,
         "duration": time.time() - start,
     }

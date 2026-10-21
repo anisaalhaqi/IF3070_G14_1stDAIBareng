@@ -27,10 +27,14 @@ def simulated_annealing(state, initial_temp=100.0, min_temp=1.0,
 
         if neighbor is not None:
             delta = calculate_objective(neighbor) - current_value
-            probability = 1.0 if delta >= 0 else math.exp(delta / temp)
-            probability_history.append(probability)
+            if delta < 0:
+                probability = math.exp(delta / temp)
+                probability_history.append((iteration, probability))
 
-            if random.random() < probability:
+                if random.random() < probability:
+                    current = neighbor
+                    current_value += delta
+            else:
                 current = neighbor
                 current_value += delta
 
