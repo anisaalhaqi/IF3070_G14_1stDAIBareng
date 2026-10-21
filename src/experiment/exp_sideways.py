@@ -8,7 +8,7 @@ from algorithms.sideways_move import hill_climbing_sideways
 from data.loader import load_data
 from objectives import calculate_objective
 from state import State
-from visualisasi import gambar_state, plot_nilai
+from visualisasi import plot_state, plot_value
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "sideways")
@@ -48,9 +48,9 @@ def main():
         path_final = os.path.join(OUTPUT_DIR, f"percobaan_{i}_final.png")
         path_plot = os.path.join(OUTPUT_DIR, f"percobaan_{i}_objective.png")
 
-        gambar_state(initial_state, judul=f"Percobaan {i} - Initial State", simpan_path=path_init)
-        gambar_state(final_state, judul=f"Percobaan {i} - Final State", simpan_path=path_final)
-        plot_nilai(history, judul=f"Percobaan {i} - Objective vs Iterasi", simpan_path=path_plot)
+        plot_state(initial_state, title=f"Percobaan {i} - Initial State", save_path=path_init)
+        plot_state(final_state, title=f"Percobaan {i} - Final State", save_path=path_final)
+        plot_value(history, title=f"Percobaan {i} - Objective vs Iterasi", save_path=path_plot)
 
         rekap.append({
             "percobaan": i,

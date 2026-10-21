@@ -1,24 +1,14 @@
 import os
-
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
+from constraints import is_valid
 from objectives import calculate_objective
-from constraints import (
-    check_overlap,
-    check_capacity,
-    check_within_ship
-)
 
-
-SURFACE = "#fcfcfb"
-TEXT_PRIMARY = "#0b0b0b"
-TEXT_SECONDARY = "#52514e"
-MUTED = "#898781"
+BACKGROUND = "#fcfcfb"
+PRIMARY = "#0b0b0b"
 GRID = "#e1e0d9"
-BASELINE = "#c3c2b7"
-
-WARNA_KATEGORIKAL = [
+CATEGORY = [
     "#2a78d6",
     "#eb6834",
     "#1baf7a",
@@ -29,243 +19,129 @@ WARNA_KATEGORIKAL = [
     "#e34948"
 ]
 
-WARNA_MAKS = "#2a78d6"
 
+def plot_state(state, title="", save_path=None):
+    ship = state.ship
 
-def _siapkan_dir(path):
-    if path:
-        folder = os.path.dirname(path)
-        if folder:
-            os.makedirs(folder, exist_ok=True)
-
-
-def _gaya_sumbu(ax):
-    ax.set_facecolor(SURFACE)
-    ax.grid(
-        True,
-        color=GRID,
-        linewidth=0.8
+    fig, (ax_grid, ax_text) = plt.subplots(
+        1, 2, figsize=(11, 6), gridspec_kw={"width_ratios": [2.2, 1]}
     )
-    ax.set_axisbelow(True)
+    fig.patch.set_facecolor(BACKGROUND)
 
-    for sisi in ("top", "right"):
-        ax.spines[sisi].set_visible(False)
-
-    for sisi in ("left", "bottom"):
-        ax.spines[sisi].set_color(BASELINE)
-
-    ax.tick_params(colors=MUTED)
-
-
-def gambar_state(
-    state,
-    judul="",
-    simpan_path=None
-):
-    kapal = state.ship
-
-    fig, (
-        ax_grid,
-        ax_teks
-    ) = plt.subplots(
-        1,
-        2,
-        figsize=(11, 6),
-        gridspec_kw={
-            "width_ratios": [2.2, 1]
-        }
-    )
-
-    fig.patch.set_facecolor(SURFACE)
-
-    ax_grid.set_facecolor(SURFACE)
-    ax_grid.set_xlim(0, kapal.w)
-    ax_grid.set_ylim(0, kapal.l)
+    ax_grid.set_facecolor(BACKGROUND)
+    ax_grid.set_xlim(0, ship.w)
+    ax_grid.set_ylim(0, ship.l)
     ax_grid.set_aspect("equal")
     ax_grid.invert_yaxis()
+    ax_grid.set_xticks(range(ship.w + 1))
+    ax_grid.set_yticks(range(ship.l + 1))
+    ax_grid.grid(True, color=GRID, linewidth=0.8)
 
-    ax_grid.set_xticks(range(kapal.w + 1))
-    ax_grid.set_yticks(range(kapal.l + 1))
-    ax_grid.grid(
-        True,
-        color=GRID,
-        linewidth=0.8
-    )
-
-    for sisi in ax_grid.spines.values():
-        sisi.set_color(BASELINE)
-
-    ax_grid.tick_params(
-        colors=MUTED,
-        labelsize=7
-    )
-
-    daftar_luar = []
+    outside = []
 
     for i, placement in enumerate(state.placements):
         vehicle = placement.vehicle
-
         if not placement.on_ship:
-            daftar_luar.append(vehicle.id)
+            outside.append(vehicle.id)
             continue
 
-        lebar, panjang = placement.effective_dimensions()
+        w, l = placement.effective_dimensions()
+        color = CATEGORY[i % len(CATEGORY)]
 
-        warna = WARNA_KATEGORIKAL[i % len(WARNA_KATEGORIKAL)]
-
-        kotak = patches.Rectangle(
+        box = patches.Rectangle(
             (placement.x, placement.y),
-            lebar,
-            panjang,
-            facecolor=warna,
-            edgecolor=TEXT_PRIMARY,
+            w,
+            l,
+            facecolor=color,
+            edgecolor=PRIMARY,
             linewidth=1,
             alpha=0.85
         )
-
-        ax_grid.add_patch(kotak)
-
+        ax_grid.add_patch(box)
         ax_grid.text(
-            placement.x + lebar / 2,
-            placement.y + panjang / 2,
-            placement.vehicle.id,
+            placement.x + w / 2,
+            placement.y + l / 2,
+            vehicle.id,
             ha="center",
             va="center",
             fontsize=8,
-            color=TEXT_PRIMARY,
+            color=PRIMARY,
             fontweight="bold"
         )
 
-    nilai = calculate_objective(state)
+    value = calculate_objective(state)
+    total_weight = sum(p.vehicle.Weight for p in state.placements if p.on_ship)
+    valid = is_valid(state)
 
-    berat_total = 0
-    for placement in state.placements:
-        if placement.on_ship:
-            berat_total += placement.vehicle.Weight
-
-    overlap = not check_overlap(state)
-    kapasitas_valid = check_capacity(state)
-    dalam_ship = all(
-        check_within_ship(placement, state.ship)
-        for placement in state.placements
+    info = (
+        f"Objective: {value}\n"
+        f"Weight: {total_weight} / {ship.MaxCapacity}\n"
+        f"Valid: {valid}\n\n"
+        f"Outside ({len(outside)}):\n"
     )
+    info += ", ".join(outside) if outside else "None"
 
-    feasible = not overlap and kapasitas_valid and dalam_ship
+    ax_text.axis("off")
+    ax_text.text(0, 1, info, va="top", ha="left", fontsize=9, color=PRIMARY, wrap=True)
 
-    teks = (
-        f"Nilai objektif: {nilai}\n"
-        f"Berat total: {berat_total} / {kapal.MaxCapacity}\n"
-        f"Feasible: {feasible}\n"
-        f"Overlap: {overlap}\n"
-        f"Luar batas: {not dalam_ship}\n\n"
-        f"Di luar kapal ({len(daftar_luar)}):\n"
-    )
-
-    if daftar_luar:
-        teks += ", ".join(daftar_luar)
-    else:
-        teks += "None"
-
-    ax_teks.axis("off")
-    ax_teks.text(
-        0,
-        1,
-        teks,
-        va="top",
-        ha="left",
-        fontsize=9,
-        color=TEXT_PRIMARY,
-        wrap=True,
-        transform=ax_teks.transAxes
-    )
-
-    fig.suptitle(judul, color=TEXT_PRIMARY)
+    if title:
+        fig.suptitle(title, color=PRIMARY)
     fig.tight_layout()
 
-    if simpan_path:
-        _siapkan_dir(simpan_path)
-        fig.savefig(
-            simpan_path,
-            dpi=120,
-            facecolor=SURFACE,
-            bbox_inches="tight"
-        )
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        fig.savefig(save_path, dpi=120, facecolor=BACKGROUND, bbox_inches="tight")
 
     plt.close(fig)
     return fig
 
 
-def plot_nilai(
-    riwayat_nilai,
-    judul="Nilai vs Iterasi",
-    simpan_path=None
-):
+def plot_value(value_history, title="Value vs Iteration", save_path=None):
     fig, ax = plt.subplots(figsize=(7, 4.5))
-    fig.patch.set_facecolor(SURFACE)
+    fig.patch.set_facecolor(BACKGROUND)
+    ax.set_facecolor(BACKGROUND)
+    ax.grid(True, color=GRID, linewidth=0.8)
 
-    _gaya_sumbu(ax)
-
-    ax.plot(
-        range(len(riwayat_nilai)),
-        riwayat_nilai,
-        color=WARNA_MAKS,
-        linewidth=1.5
-    )
-
-    ax.set_xlabel("iterasi", color=TEXT_SECONDARY)
-    ax.set_ylabel("nilai objektif", color=TEXT_SECONDARY)
-    ax.set_title(judul, color=TEXT_PRIMARY)
-
+    ax.plot(range(len(value_history)), value_history, color=CATEGORY[0], linewidth=1.5)
+    ax.set_xlabel("iterasi")
+    ax.set_ylabel("nilai objektif")
+    ax.set_title(title, color=PRIMARY)
     fig.tight_layout()
 
-    if simpan_path:
-        _siapkan_dir(simpan_path)
-        fig.savefig(
-            simpan_path,
-            dpi=120,
-            facecolor=SURFACE
-        )
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        fig.savefig(save_path, dpi=120, facecolor=BACKGROUND)
 
     plt.close(fig)
     return fig
 
 
-def plot_probabilitas(
-    riwayat_probabilitas,
-    judul="e^(ΔE/T) vs Iterasi",
-    simpan_path=None
-):
-    if not riwayat_probabilitas:
+def plot_prob(prob_history, title="e^(ΔE/T) vs Iteration", save_path=None):
+    if not prob_history:
         return None
 
     fig, ax = plt.subplots(figsize=(7, 4.5))
-    fig.patch.set_facecolor(SURFACE)
+    fig.patch.set_facecolor(BACKGROUND)
+    ax.set_facecolor(BACKGROUND)
+    ax.grid(True, color=GRID, linewidth=0.8)
 
-    _gaya_sumbu(ax)
-
-    if isinstance(riwayat_probabilitas[0], (tuple, list)):
-        x = [item[0] for item in riwayat_probabilitas]
-        y = [item[1] for item in riwayat_probabilitas]
+    if isinstance(prob_history[0], (tuple, list)):
+        x = [item[0] for item in prob_history]
+        y = [item[1] for item in prob_history]
     else:
-        x = list(range(len(riwayat_probabilitas)))
-        y = riwayat_probabilitas
+        x = list(range(len(prob_history)))
+        y = prob_history
 
-    ax.scatter(x, y, color="#eb6834", s=6, alpha=0.4, edgecolors="none")
-
-    ax.set_xlabel("iterasi", color=TEXT_SECONDARY)
-    ax.set_ylabel("e^(ΔE/T)", color=TEXT_SECONDARY)
-    ax.set_title(judul, color=TEXT_PRIMARY)
+    ax.scatter(x, y, color=CATEGORY[1], s=6, alpha=0.4, edgecolors="none")
+    ax.set_xlabel("iterasi")
+    ax.set_ylabel("e^(ΔE/T)")
+    ax.set_title(title, color=PRIMARY)
     ax.set_ylim(-0.05, 1.05)
-
     fig.tight_layout()
 
-    if simpan_path:
-        _siapkan_dir(simpan_path)
-        fig.savefig(
-            simpan_path,
-            dpi=120,
-            facecolor=SURFACE
-        )
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        fig.savefig(save_path, dpi=120, facecolor=BACKGROUND)
 
     plt.close(fig)
     return fig

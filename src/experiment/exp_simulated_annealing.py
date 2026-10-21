@@ -8,7 +8,7 @@ from algorithms.simulated_annealing import simulated_annealing
 from data.loader import load_data
 from objectives import calculate_objective
 from state import State
-from visualisasi import gambar_state, plot_nilai, plot_probabilitas
+from visualisasi import plot_state, plot_value, plot_prob
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "simulated_annealing")
@@ -48,10 +48,10 @@ def main():
         path_plot_obj = os.path.join(OUTPUT_DIR, f"percobaan_{i}_objective.png")
         path_plot_prob = os.path.join(OUTPUT_DIR, f"percobaan_{i}_probabilitas.png")
 
-        gambar_state(initial_state, judul=f"Percobaan {i} - Initial State", simpan_path=path_init)
-        gambar_state(final_state, judul=f"Percobaan {i} - Final State", simpan_path=path_final)
-        plot_nilai(history_value, judul=f"Percobaan {i} - Objective vs Iterasi", simpan_path=path_plot_obj)
-        plot_probabilitas(history_prob, judul=f"Percobaan {i} - e^(ΔE/T) vs Iterasi", simpan_path=path_plot_prob)
+        plot_state(initial_state, title=f"Percobaan {i} - Initial State", save_path=path_init)
+        plot_state(final_state, title=f"Percobaan {i} - Final State", save_path=path_final)
+        plot_value(history_value, title=f"Percobaan {i} - Objective vs Iterasi", save_path=path_plot_obj)
+        plot_prob(history_prob, title=f"Percobaan {i} - e^(ΔE/T) vs Iterasi", save_path=path_plot_prob)
 
         rekap.append({
             "percobaan": i,
