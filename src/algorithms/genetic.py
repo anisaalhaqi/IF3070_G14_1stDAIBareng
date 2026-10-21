@@ -6,7 +6,7 @@ from neighbors import random_neighbor
 from objectives import calculate_objective
 from state import State, Placement 
 
-def _crossover(p1, p2):
+def crossover(p1, p2):
     n = len(p1.placements)
     child = State(p1.ship, [Placement(pl.vehicle, pl.Orientation) for pl in p1.placements])
     order = list(range(n))
@@ -26,7 +26,7 @@ def _crossover(p1, p2):
     return child
 
 
-def _mutate(state, mutation_rate):
+def mutate(state, mutation_rate):
     if random.random() < mutation_rate:
         neighbor = random_neighbor(state)
         if neighbor is not None:
@@ -34,7 +34,7 @@ def _mutate(state, mutation_rate):
     return state
 
 
-def _tournament(population, fitness, k=3):
+def tournament(population, fitness, k=3):
     idx = random.sample(range(len(population)), min(k, len(population)))
     return population[max(idx, key=lambda i: fitness[i])]
 
@@ -60,10 +60,10 @@ def genetic_algorithm(state, population_size=50, max_iterations=100,
         new_pop = [population[i].copy() for i in ranked[:elite_count]]
 
         while len(new_pop) < population_size:
-            p1 = _tournament(population, fitness)
-            p2 = _tournament(population, fitness)
-            child = _crossover(p1, p2)
-            child = _mutate(child, mutation_rate)
+            p1 = tournament(population, fitness)
+            p2 = tournament(population, fitness)
+            child = crossover(p1, p2)
+            child = mutate(child, mutation_rate)
             new_pop.append(child)
 
         population = new_pop
