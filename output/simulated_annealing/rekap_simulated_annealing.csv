@@ -1,0 +1,4 @@
+percobaan,nilai_awal,nilai_akhir,durasi_detik,iterasi,frekuensi_stuck,state_awal_img,state_akhir_img,plot_obj_img,plot_exp_prob_img
+1,205,285,0.3569,5000,98,percobaan_1_initial.png,percobaan_1_final.png,percobaan_1_objective.png,percobaan_1_probabilitas.png
+2,215,285,0.3797,5000,97,percobaan_2_initial.png,percobaan_2_final.png,percobaan_2_objective.png,percobaan_2_probabilitas.png
+3,240,260,0.3647,5000,99,percobaan_3_initial.png,percobaan_3_final.png,percobaan_3_objective.png,percobaan_3_probabilitas.png
