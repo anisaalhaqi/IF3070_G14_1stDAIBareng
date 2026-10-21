@@ -10,18 +10,6 @@ class Vehicle:
     def dimensi(self):
         return self.w, self.l
 
-    def __repr__(self):
-        return (
-            f"Vehicle("
-            f"id={self.id}, "
-            f"w={self.w}, "
-            f"l={self.l}, "
-            f"ShippingFee={self.ShippingFee}, "
-            f"Weight={self.Weight}, "
-            f"ETA={self.ETA})"
-        )
-
-
 class Ship:
     def __init__(self, w, l, MaxCapacity):
         self.w = w
@@ -30,11 +18,3 @@ class Ship:
 
     def dimensi(self):
         return self.w, self.l
-
-    def __repr__(self):
-        return (
-            f"Ship("
-            f"w={self.w}, "
-            f"l={self.l}, "
-            f"MaxCapacity={self.MaxCapacity})"
-        )

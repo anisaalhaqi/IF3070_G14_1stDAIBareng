@@ -116,27 +116,59 @@ def plot_value(value_history, title="Value vs Iteration", save_path=None):
     return fig
 
 
-def plot_prob(prob_history, title="e^(ΔE/T) vs Iteration", save_path=None):
-    if not prob_history:
-        return None
+def plot_value_prob(
+    value_history,
+    prob_history=None,
+    title="Simulated Annealing: Nilai Objektif & e^(ΔE/T) vs Iterasi",
+    save_path=None,
+):
+    if prob_history is None and value_history and isinstance(value_history[0], (tuple, list)):
+        prob_history = value_history
+        value_history = []
 
-    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7, 6.5), sharex=True)
     fig.patch.set_facecolor(BACKGROUND)
-    ax.set_facecolor(BACKGROUND)
-    ax.grid(True, color=GRID, linewidth=0.8)
 
-    if isinstance(prob_history[0], (tuple, list)):
-        x = [item[0] for item in prob_history]
-        y = [item[1] for item in prob_history]
-    else:
-        x = list(range(len(prob_history)))
-        y = prob_history
+    # Subplot 1: Nilai Objektif
+    ax1.set_facecolor(BACKGROUND)
+    ax1.grid(True, color=GRID, linewidth=0.8)
+    if value_history:
+        ax1.plot(
+            range(len(value_history)),
+            value_history,
+            color=CATEGORY[0],
+            linewidth=1.5,
+            label="Nilai Objektif",
+        )
+        ax1.legend(loc="lower right")
+    ax1.set_ylabel("nilai objektif")
+    ax1.set_title(title, color=PRIMARY)
 
-    ax.scatter(x, y, color=CATEGORY[1], s=6, alpha=0.4, edgecolors="none")
-    ax.set_xlabel("iterasi")
-    ax.set_ylabel("e^(ΔE/T)")
-    ax.set_title(title, color=PRIMARY)
-    ax.set_ylim(-0.05, 1.05)
+    # Subplot 2: Probabilitas Penerimaan e^(ΔE/T)
+    ax2.set_facecolor(BACKGROUND)
+    ax2.grid(True, color=GRID, linewidth=0.8)
+    if prob_history:
+        if isinstance(prob_history[0], (tuple, list)):
+            x = [item[0] for item in prob_history]
+            y = [item[1] for item in prob_history]
+        else:
+            x = list(range(len(prob_history)))
+            y = prob_history
+
+        ax2.scatter(
+            x,
+            y,
+            color=CATEGORY[1],
+            s=6,
+            alpha=0.4,
+            edgecolors="none",
+            label="e^(ΔE/T)",
+        )
+        ax2.legend(loc="upper right")
+    ax2.set_xlabel("iterasi")
+    ax2.set_ylabel("e^(ΔE/T)")
+    ax2.set_ylim(-0.05, 1.05)
+
     fig.tight_layout()
 
     if save_path:
@@ -145,6 +177,7 @@ def plot_prob(prob_history, title="e^(ΔE/T) vs Iteration", save_path=None):
 
     plt.close(fig)
     return fig
+
 
 def plot_value_ga(max_history, avg_history, title="GA: Objective vs Iteration", save_path=None):
     fig, ax = plt.subplots(figsize=(7, 4.5))

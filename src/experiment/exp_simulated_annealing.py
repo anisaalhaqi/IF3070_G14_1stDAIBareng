@@ -8,7 +8,7 @@ from algorithms.simulated_annealing import simulated_annealing
 from data.loader import load_data
 from objectives import calculate_objective
 from state import State
-from visualisasi import plot_state, plot_value, plot_prob
+from visualisasi import plot_state, plot_value_prob
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "simulated_annealing")
@@ -46,12 +46,15 @@ def main():
         path_init = os.path.join(OUTPUT_DIR, f"percobaan_{i}_initial.png")
         path_final = os.path.join(OUTPUT_DIR, f"percobaan_{i}_final.png")
         path_plot_obj = os.path.join(OUTPUT_DIR, f"percobaan_{i}_objective.png")
-        path_plot_prob = os.path.join(OUTPUT_DIR, f"percobaan_{i}_probabilitas.png")
 
         plot_state(initial_state, title=f"Percobaan {i} - Initial State", save_path=path_init)
         plot_state(final_state, title=f"Percobaan {i} - Final State", save_path=path_final)
-        plot_value(history_value, title=f"Percobaan {i} - Objective vs Iterasi", save_path=path_plot_obj)
-        plot_prob(history_prob, title=f"Percobaan {i} - e^(ΔE/T) vs Iterasi", save_path=path_plot_prob)
+        plot_value_prob(
+            history_value,
+            history_prob,
+            title=f"Percobaan {i} - SA: Objective & e^(ΔE/T) vs Iterasi",
+            save_path=path_plot_obj,
+        )
 
         rekap.append({
             "percobaan": i,
@@ -63,7 +66,6 @@ def main():
             "state_awal_img": f"percobaan_{i}_initial.png",
             "state_akhir_img": f"percobaan_{i}_final.png",
             "plot_obj_img": f"percobaan_{i}_objective.png",
-            "plot_exp_prob_img": f"percobaan_{i}_probabilitas.png",
         })
 
         print(f"Percobaan {i}: awal={initial_value}, akhir={final_value}, iterasi={iterasi}, stuck={stuck_count}, waktu={durasi:.3f}s")
@@ -79,7 +81,6 @@ def main():
         "state_awal_img",
         "state_akhir_img",
         "plot_obj_img",
-        "plot_exp_prob_img",
     ]
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
