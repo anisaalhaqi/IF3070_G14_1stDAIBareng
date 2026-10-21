@@ -166,3 +166,60 @@ def plot_value_ga(max_history, avg_history, title="GA: Objective vs Iteration", 
 
     plt.close(fig)
     return fig
+
+
+def plot_value_rr(
+    value_history,
+    best_history=None,
+    restart_indices=None,
+    title="Random Restart: Objective vs Iterasi",
+    save_path=None,
+):
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig.patch.set_facecolor(BACKGROUND)
+    ax.set_facecolor(BACKGROUND)
+    ax.grid(True, color=GRID, linewidth=0.8)
+
+    ax.plot(
+        range(len(value_history)),
+        value_history,
+        color=CATEGORY[0],
+        linewidth=1.2,
+        alpha=0.75,
+        label="Nilai Objektif",
+    )
+    if best_history:
+        ax.plot(
+            range(len(best_history)),
+            best_history,
+            color=CATEGORY[1],
+            linewidth=1.8,
+            label="Nilai Terbaik (Best)",
+        )
+
+    if restart_indices and len(restart_indices) > 1:
+        first = True
+        for idx in restart_indices[1:]:
+            label = "Restart" if first else None
+            ax.axvline(
+                x=idx,
+                color="#898781",
+                linestyle="--",
+                linewidth=0.9,
+                alpha=0.6,
+                label=label,
+            )
+            first = False
+
+    ax.set_xlabel("iterasi")
+    ax.set_ylabel("nilai objektif")
+    ax.set_title(title, color=PRIMARY)
+    ax.legend(loc="lower right")
+    fig.tight_layout()
+
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        fig.savefig(save_path, dpi=120, facecolor=BACKGROUND)
+
+    plt.close(fig)
+    return fig
