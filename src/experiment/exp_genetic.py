@@ -96,5 +96,7 @@ def main():
         writer.writeheader()
         writer.writerows(rekap)
 
+    print(f"Rekap disimpan ke {csv_path}")
+
 if __name__ == "__main__":
     main()
