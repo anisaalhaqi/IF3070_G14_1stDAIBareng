@@ -145,3 +145,24 @@ def plot_prob(prob_history, title="e^(ΔE/T) vs Iteration", save_path=None):
 
     plt.close(fig)
     return fig
+
+def plot_value_ga(max_history, avg_history, title="GA: Objective vs Iteration", save_path=None):
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig.patch.set_facecolor(BACKGROUND)
+    ax.set_facecolor(BACKGROUND)
+    ax.grid(True, color=GRID, linewidth=0.8)
+
+    ax.plot(range(len(max_history)), max_history, color=CATEGORY[0], linewidth=1.5, label="Maksimum")
+    ax.plot(range(len(avg_history)), avg_history, color=CATEGORY[1], linewidth=1.5, label="Rata-rata")
+    ax.set_xlabel("iterasi")
+    ax.set_ylabel("nilai objektif")
+    ax.set_title(title, color=PRIMARY)
+    ax.legend()
+    fig.tight_layout()
+
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        fig.savefig(save_path, dpi=120, facecolor=BACKGROUND)
+
+    plt.close(fig)
+    return fig
