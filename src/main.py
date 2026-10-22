@@ -19,7 +19,6 @@ from data.loader import load_data
 from objectives import calculate_objective
 from state import State
 
-# Import modul eksperimen langsung dari folder src/experiment
 import exp_steepest_ascent
 import exp_sideways
 import exp_stochastic
@@ -38,31 +37,28 @@ DAFTAR_ALGORITMA = {
     6: ("Genetic Algorithm", exp_genetic.main),
 }
 
-
 def main():
-    print("\n" + "=" * 65)
-    print("      PROGRAM UTAMA EVALUASI ALGORITMA (APPLES-TO-APPLES)")
-    print("=" * 65)
+    print("\n" + "=" * 21)
+    print("Program Utama")
+    print("=" * 21)
 
     ship, vehicles = load_data(DATA_PATH)
-
-    # 1. Bangkitkan 3 initial state terpusat di awal program
-    print("\nMembangkitkan 3 Initial State awal terpusat...")
+    
     initial_states = [State.random(ship, vehicles) for _ in range(3)]
 
-    print("\n3 Initial State berhasil dibuat (akan digunakan oleh SEMUA algoritma):")
+    print("\n3 RandomInitial State :")
     for i, st in enumerate(initial_states, 1):
         print(f"  * Percobaan {i} : Nilai Objective Awal = {calculate_objective(st)}")
 
     sudah_dijalankan = set()
 
-    # 2. Loop menu pilihan algoritma
     while True:
         belum_dicoba = [k for k in DAFTAR_ALGORITMA if k not in sudah_dijalankan]
 
-        print("\n" + "=" * 65)
-        print("                   PILIHAN ALGORITMA")
-        print("=" * 65)
+        print("\n" + "=" * 21)
+        print("PILIHAN ALGORITMA")
+        print("\n" + "=" * 21)
+        
         for num, (nama, _) in DAFTAR_ALGORITMA.items():
             status = "[SUDAH DIJALANKAN]" if num in sudah_dijalankan else "[BELUM DICOBA]"
             print(f"  {num}. {nama:<35} {status}")
