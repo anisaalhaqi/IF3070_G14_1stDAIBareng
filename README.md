@@ -1,6 +1,8 @@
-# Tugas Besar 1 IF2220 / II2220 Dasar Inteligensi Artifisial
----
+# Tugas Besar I IF3070 Dasar Intelegensi Artifisial
+## Implementasi dan Analisis Algoritma Local Search untuk Optimasi Penataan Kendaraan pada Kapal Kargo
+![kapal](.resources/kapal.jpg) 
 
+---
 ## Deskripsi Singkat Repository
 
 Repository ini berisi implementasi  algoritma **Local Search** untuk memecahkan permasalahan optimasi penataan muatan kendaraan pada kapal. 
