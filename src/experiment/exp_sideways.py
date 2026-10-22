@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from algorithms.sideways_move import hill_climbing_sideways
 from data.loader import load_data
 from objectives import calculate_objective
-from state import State
 from visualisasi import plot_state, plot_value
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
