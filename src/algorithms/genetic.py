@@ -34,7 +34,7 @@ def mutate(state, mutation_rate):
     return state
 
 
-def random_roulette_wheel(population, fitness, k=3):
+def tournament(population, fitness, k=3):
     idx = random.sample(range(len(population)), min(k, len(population)))
     return population[max(idx, key=lambda i: fitness[i])]
 
@@ -60,8 +60,8 @@ def genetic_algorithm(state, population_size=50, max_iterations=1000,
         new_pop = [population[i].copy() for i in ranked[:elite_count]]
 
         while len(new_pop) < population_size:
-            p1 = random_roulette_wheel(population, fitness)
-            p2 = random_roulette_wheel(population, fitness)
+            p1 = tournament(population, fitness)
+            p2 = tournament(population, fitness)
             child = crossover(p1, p2)
             child = mutate(child, mutation_rate)
             new_pop.append(child)
