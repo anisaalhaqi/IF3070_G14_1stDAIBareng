@@ -1,4 +1,0 @@
-percobaan,nilai_awal,nilai_akhir,durasi_detik,iterasi,stop_reason,state_awal_img,state_akhir_img,plot_obj_img
-1,180,250,0.0063,3,local_optimum,percobaan_1_initial.png,percobaan_1_final.png,percobaan_1_objective.png
-2,155,155,0.0014,0,local_optimum,percobaan_2_initial.png,percobaan_2_final.png,percobaan_2_objective.png
-3,125,205,0.0064,3,local_optimum,percobaan_3_initial.png,percobaan_3_final.png,percobaan_3_objective.png

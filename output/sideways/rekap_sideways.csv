@@ -1,4 +1,0 @@
-percobaan,max_sideways,nilai_awal,nilai_akhir,durasi_detik,iterasi,sideways_moves,stop_reason,state_awal_img,state_akhir_img,plot_obj_img
-1,200,185,285,0.3726,204,200,max_sideways,percobaan_1_initial.png,percobaan_1_final.png,percobaan_1_objective.png
-2,200,205,285,0.3469,205,200,max_sideways,percobaan_2_initial.png,percobaan_2_final.png,percobaan_2_objective.png
-3,200,165,245,0.3125,203,200,max_sideways,percobaan_3_initial.png,percobaan_3_final.png,percobaan_3_objective.png
