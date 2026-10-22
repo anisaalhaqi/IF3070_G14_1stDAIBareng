@@ -20,7 +20,20 @@ CATEGORY = [
 ]
 
 
-def plot_state(state, title="", save_path=None):
+def plot_state(
+    state,
+    title="",
+    save_path=None,
+    iterations=None,
+    duration=None,
+    algorithm=None,
+    max_sideways=None,
+    max_restarts=None,
+    stuck_frequency=None,
+    population_size=None,
+    iteration=None,
+    **kwargs,
+):
     ship = state.ship
 
     fig, (ax_grid, ax_text) = plt.subplots(
@@ -37,6 +50,7 @@ def plot_state(state, title="", save_path=None):
     ax_grid.set_yticks(range(ship.l + 1))
     ax_grid.grid(True, color=GRID, linewidth=0.8)
 
+    inside = []
     outside = []
 
     for i, placement in enumerate(state.placements):
@@ -45,6 +59,7 @@ def plot_state(state, title="", save_path=None):
             outside.append(vehicle.id)
             continue
 
+        inside.append(vehicle.id)
         w, l = placement.effective_dimensions()
         color = CATEGORY[i % len(CATEGORY)]
 
@@ -55,7 +70,7 @@ def plot_state(state, title="", save_path=None):
             facecolor=color,
             edgecolor=PRIMARY,
             linewidth=1,
-            alpha=0.85
+            alpha=0.85,
         )
         ax_grid.add_patch(box)
         ax_grid.text(
@@ -66,23 +81,77 @@ def plot_state(state, title="", save_path=None):
             va="center",
             fontsize=8,
             color=PRIMARY,
-            fontweight="bold"
+            fontweight="bold",
         )
+
+    # Tangani alias dari parameter kwargs jika ada
+    if iterations is None:
+        iterations = iteration if iteration is not None else kwargs.get("iterasi", kwargs.get("iteration", None))
+    if duration is None:
+        duration = kwargs.get("durasi", None)
+    if max_sideways is None:
+        max_sideways = kwargs.get("max_sideway", None)
+    if max_restarts is None:
+        max_restarts = kwargs.get("max_restart", kwargs.get("restarts", None))
+    if stuck_frequency is None:
+        stuck_frequency = kwargs.get("stuck_count", kwargs.get("frekuensi_stuck", None))
+    if population_size is None:
+        population_size = kwargs.get("populasi", kwargs.get("population", None))
 
     value = calculate_objective(state)
     total_weight = sum(p.vehicle.Weight for p in state.placements if p.on_ship)
-    valid = is_valid(state)
 
-    info = (
-        f"Objective: {value}\n"
-        f"Weight: {total_weight} / {ship.MaxCapacity}\n"
-        f"Valid: {valid}\n\n"
-        f"Outside ({len(outside)}):\n"
-    )
-    info += ", ".join(outside) if outside else "None"
+    inside_str = ", ".join(inside) if inside else "None"
+    outside_str = ", ".join(outside) if outside else "None"
+
+    if iterations is not None:
+        try:
+            iteration_str = str(int(iterations))
+        except (ValueError, TypeError):
+            iteration_str = str(iterations)
+    else:
+        iteration_str = "-"
+
+    if duration is not None:
+        if isinstance(duration, (int, float)):
+            duration_str = f"{duration:.3f}s"
+        else:
+            duration_str = str(duration)
+    else:
+        duration_str = "-"
+
+    info_lines = [
+        f"Objective: {value}",
+        f"Weight: {total_weight} / {ship.MaxCapacity}",
+        f"Vehicle Inside: {len(inside)} ({inside_str})",
+        f"Vehicle Outside: {len(outside)} ({outside_str})",
+        f"Iteration: {iteration_str}",
+        f"Duration: {duration_str}",
+    ]
+
+    algo = str(algorithm).lower().strip() if algorithm else ""
+
+    # Tambahan: ditampilkan hanya saat pemilihan algoritma tertentu
+    if "sideways" in algo or max_sideways is not None:
+        val = max_sideways if max_sideways is not None else "-"
+        info_lines.append(f"Maximum sideways move: {val}")
+
+    if ("restart" in algo or "rr" in algo) or max_restarts is not None:
+        val = max_restarts if max_restarts is not None else "-"
+        info_lines.append(f"maximum restart: {val}")
+
+    if ("anneal" in algo or algo == "sa") or stuck_frequency is not None:
+        val = stuck_frequency if stuck_frequency is not None else "-"
+        info_lines.append(f"stuck frequency: {val}")
+
+    if ("gene" in algo or algo == "ga") or population_size is not None:
+        val = population_size if population_size is not None else "-"
+        info_lines.append(f"jumlah populasi: {val}")
+
+    info = "\n\n".join(info_lines)
 
     ax_text.axis("off")
-    ax_text.text(0, 1, info, va="top", ha="left", fontsize=9, color=PRIMARY, wrap=True)
+    ax_text.text(0, 1, info, va="top", ha="left", fontsize=9.5, color=PRIMARY, wrap=True)
 
     if title:
         fig.suptitle(title, color=PRIMARY)
