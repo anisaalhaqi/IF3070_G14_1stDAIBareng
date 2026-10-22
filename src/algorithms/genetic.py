@@ -39,7 +39,7 @@ def random_roulette_wheel(population, fitness, k=3):
     return population[max(idx, key=lambda i: fitness[i])]
 
 
-def genetic_algorithm(state, population_size=50, max_iterations=100,
+def genetic_algorithm(state, population_size=50, max_iterations=1000,
                       mutation_rate=0.3, elite_count=1):
     start = time.time()
     vehicles = [p.vehicle for p in state.placements]
