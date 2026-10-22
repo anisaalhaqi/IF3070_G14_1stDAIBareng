@@ -1,6 +1,6 @@
 # Tugas Besar I IF3070 Dasar Intelegensi Artifisial
 ## Implementasi dan Analisis Algoritma Local Search untuk Optimasi Penataan Kendaraan pada Kapal Kargo
-![kapal](.resources/kapal.jpg) 
+![kapal](resources/kapal.jpg) 
 
 ---
 ## Deskripsi Singkat Repository
