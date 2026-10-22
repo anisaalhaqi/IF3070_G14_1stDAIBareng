@@ -41,7 +41,13 @@ def main():
         path_plot = os.path.join(OUTPUT_DIR, f"percobaan_{i}_objective.png")
 
         plot_state(initial_state, title=f"Percobaan {i} - Initial State", save_path=path_init)
-        plot_state(final_state, title=f"Percobaan {i} - Final State", save_path=path_final)
+        plot_state(
+            final_state,
+            title=f"Percobaan {i} - Final State",
+            save_path=path_final,
+            iterations=hasil["iterations"],
+            duration=hasil["duration"],
+        )
         plot_value(history, title=f"Percobaan {i} - Objective vs Iterasi", save_path=path_plot)
 
         rekap.append({

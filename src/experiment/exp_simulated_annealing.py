@@ -48,7 +48,15 @@ def main():
         path_plot_obj = os.path.join(OUTPUT_DIR, f"percobaan_{i}_objective.png")
 
         plot_state(initial_state, title=f"Percobaan {i} - Initial State", save_path=path_init)
-        plot_state(final_state, title=f"Percobaan {i} - Final State", save_path=path_final)
+        plot_state(
+            final_state,
+            title=f"Percobaan {i} - Final State",
+            save_path=path_final,
+            iterations=hasil["iterations"],
+            duration=hasil["duration"],
+            algorithm="simulated annealing",
+            stuck_frequency=stuck_count,
+        )
         plot_value_prob(
             history_value,
             history_prob,
