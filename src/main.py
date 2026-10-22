@@ -38,15 +38,14 @@ DAFTAR_ALGORITMA = {
 }
 
 def main():
-    print("\n" + "=" * 21)
+    print("\n" + "=" * 14)
     print("Program Utama")
-    print("=" * 21)
+    print("=" * 14)
 
     ship, vehicles = load_data(DATA_PATH)
-    
     initial_states = [State.random(ship, vehicles) for _ in range(3)]
 
-    print("\n3 RandomInitial State :")
+    print("\n3 Random Initial State :")
     for i, st in enumerate(initial_states, 1):
         print(f"  * Percobaan {i} : Nilai Objective Awal = {calculate_objective(st)}")
 
@@ -55,10 +54,10 @@ def main():
     while True:
         belum_dicoba = [k for k in DAFTAR_ALGORITMA if k not in sudah_dijalankan]
 
-        print("\n" + "=" * 21)
+        print("\n" + "=" * 18)
         print("PILIHAN ALGORITMA")
-        print("\n" + "=" * 21)
-        
+        print("=" * 18)
+
         for num, (nama, _) in DAFTAR_ALGORITMA.items():
             status = "[SUDAH DIJALANKAN]" if num in sudah_dijalankan else "[BELUM DICOBA]"
             print(f"  {num}. {nama:<35} {status}")
@@ -66,16 +65,10 @@ def main():
         print("  7. Jalankan SEMUA Algoritma yang Belum Dicoba")
         print("  0. Selesai (Keluar)")
 
-        if belum_dicoba:
-            nama_sisa = ", ".join([f"{k} ({DAFTAR_ALGORITMA[k][0]})" for k in belum_dicoba])
-            print(f"\nAlgoritma yang belum dicoba: {nama_sisa}")
-        else:
-            print("\nSemua algoritma sudah selesai dicoba!")
-
         pilihan = input("\nMasukkan nomor pilihan Anda: ").strip()
 
         if pilihan in ["0", "selesai", "exit", "keluar"]:
-            print("\nTerima kasih! Seluruh grafik gambar dan rekap CSV tersimpan di folder 'output/'.")
+            print("\nbye :)))) stop nubes")
             break
 
         elif pilihan == "7":
