@@ -85,7 +85,7 @@ Masukkan nomor pilihan Anda:
 
 ---
 
-## 👥 Pembagian Tugas Anggota Kelompok
+## Pembagian Tugas Anggota Kelompok
 
 | Nama | NIM | Tugas & Tanggung Jawab |
 | :--- | :---: | :--- |
