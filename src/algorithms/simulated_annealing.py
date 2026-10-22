@@ -6,7 +6,7 @@ from neighbors import random_neighbor
 from objectives import calculate_objective
 
 def simulated_annealing(state, initial_temp=100.0, min_temp=1.0,
-                        stuck_limit=50, max_iterations=5000):
+                        stuck_limit=50, max_iterations=1000):
     start = time.time()
     cooling_rate = (min_temp / initial_temp) ** (1.0 / max_iterations)
 

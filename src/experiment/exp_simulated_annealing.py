@@ -32,7 +32,7 @@ def main(initial_states=None):
             initial_temp=100.0,
             min_temp=1.0,
             stuck_limit=50,
-            max_iterations=5000
+            max_iterations=1000
         )
 
         final_state = hasil["final_state"]
