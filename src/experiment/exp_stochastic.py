@@ -14,7 +14,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "stochastic")
 
 
-def main():
+def main(initial_states=None):
     ship, vehicles = load_data(DATA_PATH)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -24,10 +24,10 @@ def main():
     print("--- Eksperimen Stochastic Hill-Climbing ---")
 
     for i in range(1, jumlah_percobaan + 1):
-        initial_state = State.random(ship, vehicles)
+        initial_state = initial_states[i - 1].copy()
         initial_value = calculate_objective(initial_state)
 
-        hasil = stochastic_hill_climbing(initial_state, max_iterations=1000)
+        hasil = stochastic_hill_climbing(initial_state.copy(), max_iterations=1000)
 
         final_state = hasil["final_state"]
         final_value = hasil["final_value"]
@@ -82,6 +82,7 @@ def main():
         writer.writerows(rekap)
 
     print(f"Rekap disimpan ke {csv_path}")
+
 
 if __name__ == "__main__":
     main()

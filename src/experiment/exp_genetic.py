@@ -14,7 +14,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "genetic")
 
 
-def main():
+def main(initial_states=None):
     try:
         inp = input("Masukkan jumlah populasi kontrol untuk exp1 (default 50): ").strip()
         pop_kontrol = int(inp) if inp else 50
@@ -45,10 +45,10 @@ def main():
         print(f"\n--- Eksperimen Genetic Algorithm ({nama}: populasi={populasi}, iterasi={iterasi}) ---")
 
         for i in range(1, jumlah_percobaan + 1):
-            initial_state = State.random(ship, vehicles)
+            initial_state = initial_states[i - 1].copy()
             initial_value = calculate_objective(initial_state)
 
-            hasil = genetic_algorithm(initial_state, population_size=populasi, max_iterations=iterasi)
+            hasil = genetic_algorithm(initial_state.copy(), population_size=populasi, max_iterations=iterasi)
 
             final_state = hasil["final_state"]
             final_value = hasil["final_value"]
@@ -68,8 +68,12 @@ def main():
                 algorithm="genetic",
                 population_size=populasi,
             )
-            plot_value_ga(hasil["max_history"], hasil["avg_history"],
-                          title=f"Percobaan {i} - Objective vs Iterasi", save_path=path_plot)
+            plot_value_ga(
+                hasil["max_history"],
+                hasil["avg_history"],
+                title=f"Percobaan {i} - Objective vs Iterasi",
+                save_path=path_plot,
+            )
 
             rekap.append({
                 "eksperimen": nama,
@@ -105,6 +109,7 @@ def main():
         writer.writerows(rekap)
 
     print(f"Rekap disimpan ke {csv_path}")
+
 
 if __name__ == "__main__":
     main()

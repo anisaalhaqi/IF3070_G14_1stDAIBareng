@@ -14,20 +14,20 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "steepest_ascent")
 
 
-def main():
+def main(initial_states=None):
     ship, vehicles = load_data(DATA_PATH)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     rekap = []
     jumlah_percobaan = 3
 
-    print("--- Eksperimen Hill-Climbing Steepest Ascent ---")
+    print("\n--- Eksperimen Hill-Climbing Steepest Ascent ---")
 
     for i in range(1, jumlah_percobaan + 1):
-        initial_state = State.random(ship, vehicles)
+        initial_state = initial_states[i - 1].copy()
         initial_value = calculate_objective(initial_state)
 
-        hasil = hill_climbing_steepest_ascent(initial_state)
+        hasil = hill_climbing_steepest_ascent(initial_state.copy())
 
         final_state = hasil["final_state"]
         final_value = hasil["final_value"]

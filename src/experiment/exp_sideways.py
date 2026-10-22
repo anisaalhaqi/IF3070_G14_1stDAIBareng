@@ -14,7 +14,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "sideways")
 
 
-def main():
+def main(initial_states=None):
     inp = input("Masukkan maximum sideways move (default 100): ").strip()
     try:
         max_sideways = int(inp) if inp else 100
@@ -31,10 +31,10 @@ def main():
     print(f"\n--- Eksperimen Hill-Climbing Sideways Move (max_sideways={max_sideways}) ---")
 
     for i in range(1, jumlah_percobaan + 1):
-        initial_state = State.random(ship, vehicles)
+        initial_state = initial_states[i - 1].copy()
         initial_value = calculate_objective(initial_state)
 
-        hasil = hill_climbing_sideways(initial_state, max_sideways=max_sideways, max_iterations=1000)
+        hasil = hill_climbing_sideways(initial_state.copy(), max_sideways=max_sideways, max_iterations=1000)
 
         final_state = hasil["final_state"]
         final_value = hasil["final_value"]

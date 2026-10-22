@@ -14,7 +14,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "simulated_annealing")
 
 
-def main():
+def main(initial_states=None):
     ship, vehicles = load_data(DATA_PATH)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -24,11 +24,11 @@ def main():
     print("--- Eksperimen Simulated Annealing ---")
 
     for i in range(1, jumlah_percobaan + 1):
-        initial_state = State.random(ship, vehicles)
+        initial_state = initial_states[i - 1].copy()
         initial_value = calculate_objective(initial_state)
 
         hasil = simulated_annealing(
-            initial_state,
+            initial_state.copy(),
             initial_temp=100.0,
             min_temp=1.0,
             stuck_limit=50,

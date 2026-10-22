@@ -14,7 +14,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "output", "random_restart")
 
 
-def main():
+def main(initial_states=None):
     inp = input("Masukkan maximum restart (default 10): ").strip()
     try:
         max_restarts = int(inp) if inp else 10
@@ -36,11 +36,11 @@ def main():
     print(f"\n--- Eksperimen Random Restart Hill-Climbing (max_restart={max_restarts}) ---")
 
     for i in range(1, jumlah_percobaan + 1):
-        initial_state = State.random(ship, vehicles)
+        initial_state = initial_states[i - 1].copy()
         initial_value = calculate_objective(initial_state)
 
         hasil = random_restart_hill_climbing(
-            initial_state,
+            initial_state.copy(),
             max_restarts=max_restarts,
             max_iterations_per_restart=max_iterations,
             vehicles=vehicles,
@@ -121,7 +121,7 @@ def main():
         writer.writeheader()
         writer.writerows(rekap)
 
-    print(f"\nRekap disimpan ke {csv_path}")
+    print(f"Rekap disimpan ke {csv_path}")
 
 
 if __name__ == "__main__":
