@@ -84,7 +84,7 @@ def plot_state(
             fontweight="bold",
         )
 
-    # Tangani alias dari parameter kwargs jika ada
+    # ini soalnya aliasnya aga aga
     if iterations is None:
         iterations = iteration if iteration is not None else kwargs.get("iterasi", kwargs.get("iteration", None))
     if duration is None:
@@ -131,7 +131,6 @@ def plot_state(
 
     algo = str(algorithm).lower().strip() if algorithm else ""
 
-    # Tambahan: ditampilkan hanya saat pemilihan algoritma tertentu
     if "sideways" in algo or max_sideways is not None:
         val = max_sideways if max_sideways is not None else "-"
         info_lines.append(f"Maximum sideways move: {val}")
@@ -184,7 +183,6 @@ def plot_value(value_history, title="Value vs Iteration", save_path=None):
     plt.close(fig)
     return fig
 
-
 def plot_value_prob(
     value_history,
     prob_history=None,
@@ -198,7 +196,7 @@ def plot_value_prob(
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7, 6.5), sharex=True)
     fig.patch.set_facecolor(BACKGROUND)
 
-    # Subplot 1: Nilai Objektif
+    # Nilai Objektif kek buat subplot 1
     ax1.set_facecolor(BACKGROUND)
     ax1.grid(True, color=GRID, linewidth=0.8)
     if value_history:
@@ -213,7 +211,7 @@ def plot_value_prob(
     ax1.set_ylabel("nilai objektif")
     ax1.set_title(title, color=PRIMARY)
 
-    # Subplot 2: Probabilitas Penerimaan e^(ΔE/T)
+    # Subplot 2 buat si e^(ΔE/T)
     ax2.set_facecolor(BACKGROUND)
     ax2.grid(True, color=GRID, linewidth=0.8)
     if prob_history:
@@ -247,7 +245,6 @@ def plot_value_prob(
     plt.close(fig)
     return fig
 
-
 def plot_value_ga(max_history, avg_history, title="GA: Objective vs Iteration", save_path=None):
     fig, ax = plt.subplots(figsize=(7, 4.5))
     fig.patch.set_facecolor(BACKGROUND)
@@ -268,7 +265,6 @@ def plot_value_ga(max_history, avg_history, title="GA: Objective vs Iteration", 
 
     plt.close(fig)
     return fig
-
 
 def plot_value_rr(
     value_history,
