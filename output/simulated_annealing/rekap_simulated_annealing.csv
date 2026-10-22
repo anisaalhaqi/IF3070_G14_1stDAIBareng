@@ -1,0 +1,4 @@
+percobaan,nilai_awal,nilai_akhir,durasi_detik,iterasi,frekuensi_stuck,state_awal_img,state_akhir_img,plot_obj_img
+1,155,255,0.1398,1000,18,percobaan_1_initial.png,percobaan_1_final.png,percobaan_1_objective.png
+2,155,260,0.0804,1000,17,percobaan_2_initial.png,percobaan_2_final.png,percobaan_2_objective.png
+3,220,265,0.0795,1000,19,percobaan_3_initial.png,percobaan_3_final.png,percobaan_3_objective.png
