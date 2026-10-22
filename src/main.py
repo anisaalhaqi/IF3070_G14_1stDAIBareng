@@ -2,11 +2,18 @@ import os
 import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SRC_DIR = os.path.join(BASE_DIR, "src")
+if os.path.basename(BASE_DIR) == "src":
+    SRC_DIR = BASE_DIR
+    BASE_DIR = os.path.dirname(BASE_DIR)
+else:
+    SRC_DIR = os.path.join(BASE_DIR, "src")
+
 EXP_DIR = os.path.join(SRC_DIR, "experiment")
 
-sys.path.append(SRC_DIR)
-sys.path.append(EXP_DIR)
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
+if EXP_DIR not in sys.path:
+    sys.path.insert(0, EXP_DIR)
 
 from data.loader import load_data
 from objectives import calculate_objective
