@@ -1,8 +1,6 @@
 import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-
-from constraints import is_valid
 from objectives import calculate_objective
 
 BACKGROUND = "#fcfcfb"
@@ -84,7 +82,7 @@ def plot_state(
             fontweight="bold",
         )
 
-    # ini soalnya aliasnya aga aga
+    # alternatif 
     if iterations is None:
         iterations = iteration if iteration is not None else kwargs.get("iterasi", kwargs.get("iteration", None))
     if duration is None:
@@ -196,7 +194,7 @@ def plot_value_prob(
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7, 6.5), sharex=True)
     fig.patch.set_facecolor(BACKGROUND)
 
-    # Nilai Objektif kek buat subplot 1
+    # Nilai Objektif
     ax1.set_facecolor(BACKGROUND)
     ax1.grid(True, color=GRID, linewidth=0.8)
     if value_history:
